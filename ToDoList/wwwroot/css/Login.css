@@ -1,0 +1,48 @@
+﻿body {
+    background-color: #f5f6f8;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.logo-box {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 450px;
+    min-height: 600px; /* Taller than registration */
+    margin-left: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container-fluid {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-card {
+        margin-top: 20px;
+    }
+}
