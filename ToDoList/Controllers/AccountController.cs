@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ToDoList.Models;
 
 namespace ToDoList.Controllers
@@ -6,10 +7,11 @@ namespace ToDoList.Controllers
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-
-        public AccountController(IHttpClientFactory httpClientFactory)
+        private readonly string _baseUrl;
+        public AccountController(IHttpClientFactory httpClientFactory, IOptions<ApiSettings>apiSettings)
         {
             _httpClientFactory = httpClientFactory;
+            _baseUrl = apiSettings.Value.BaseUrl;
         }
 
         [HttpGet]
@@ -22,7 +24,7 @@ namespace ToDoList.Controllers
                 return View(dto);
 
             var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync("https://localhost:44316/api/Users/register", dto);
+            var response = await client.PostAsJsonAsync($"{_baseUrl}api/Users/register", dto);
 
             if (response.IsSuccessStatusCode)
                 return RedirectToAction("Login");
@@ -46,7 +48,7 @@ namespace ToDoList.Controllers
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync("https://localhost:44316/api/Users/login", dto);
+            var response = await client.PostAsJsonAsync($"{_baseUrl}api/Users/login", dto);
 
             if(response.IsSuccessStatusCode)
             {

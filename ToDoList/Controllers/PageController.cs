@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ToDoList.Models;
 
 namespace ToDoList.Controllers
@@ -7,15 +8,17 @@ namespace ToDoList.Controllers
     public class PageController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public PageController(IHttpClientFactory httpClientFactory)
+        public readonly string _baseUrl;
+        public PageController(IHttpClientFactory httpClientFactory, IOptions<ApiSettings>apiSettings)
         {
             _httpClientFactory = httpClientFactory;
+            _baseUrl = apiSettings.Value.BaseUrl;
         }
         private HttpClient GetClient()
         {
             var token = HttpContext.Session.GetString("JWTToken");
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://localhost:44316/");
+            client.BaseAddress = new Uri($"{_baseUrl}");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
         }

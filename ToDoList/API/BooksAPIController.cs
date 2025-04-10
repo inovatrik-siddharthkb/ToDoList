@@ -36,12 +36,10 @@ namespace ToDoList.API
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            //var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var book = await _context.Books
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(b => b.BookId == id);
 
-            //if (book == null || book.UserId != userId)
             if(book == null)
                 return NotFound();
 
@@ -87,7 +85,6 @@ namespace ToDoList.API
         public async Task<ActionResult<Book>> PostBook([FromBody] BookDto dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            //book.UserId = userId;
 
             var book = new Book
             {

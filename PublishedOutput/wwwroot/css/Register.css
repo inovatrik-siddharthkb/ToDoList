@@ -1,0 +1,39 @@
+﻿
+body {
+    background-color: #f5f6f8; /* Match logo background */
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.logo-box {
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-card {
+    width: 100%;
+    max-width: 450px;
+}
+
+{
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-box {
+    margin-bottom: 20px;
+}
+
+.form-card {
+    margin-left: 0 !important;
+}
+
+}

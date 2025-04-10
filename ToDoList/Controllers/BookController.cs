@@ -2,22 +2,24 @@
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ToDoList.Models;
+using Microsoft.Extensions.Options;
 
 namespace ToDoList.Controllers
 {
     public class BookController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        
-        public BookController(IHttpClientFactory httpClientFactory)
+        private readonly string _baseUrl;
+        public BookController(IHttpClientFactory httpClientFactory, IOptions<ApiSettings>apiSettings)
         {
             _httpClientFactory = httpClientFactory;
+            _baseUrl = apiSettings.Value.BaseUrl;
         }
         private HttpClient GetClient()
         {
             var token = HttpContext.Session.GetString("JWTToken");
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://localhost:44316/");
+            client.BaseAddress = new Uri($"{_baseUrl}");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
         }

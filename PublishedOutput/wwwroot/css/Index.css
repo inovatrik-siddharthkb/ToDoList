@@ -1,0 +1,22 @@
+﻿body {
+    background-color: #f5f6f8;
+}
+
+.bg-wrapper {
+    background-color: #f5f6f8;
+    min-height: 100vh;
+}
+
+.table {
+    background-color: white;
+}
+
+.btn-primary,
+.btn-outline-primary,
+.dropdown-menu .dropdown-item {
+    font-size: 0.9rem;
+}
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #e6e9ef;
+    }

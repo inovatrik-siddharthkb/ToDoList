@@ -11,7 +11,6 @@ namespace ToDoList.API
     public class PagesAPIController : ControllerBase
     {
         private readonly AppDbContext _context;
-
         public PagesAPIController(AppDbContext context)
         {
             _context = context;
