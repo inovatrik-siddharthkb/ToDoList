@@ -34,6 +34,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = context =>
+            {
+                context.HandleResponse();
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/json";
+                var json = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    error = "Session expired or token is invalid."
+                });
+                return context.Response.WriteAsync(json);
+            },
+            OnForbidden = context =>
+            {
+                context.Response.StatusCode = 403;
+                context.Response.ContentType = "application/json";
+                var json = System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    error = "You are not authorized to access this resource."
+                });
+                return context.Response.WriteAsync(json);
+            }
+        };
     });
 
 builder.Services.AddSession(options =>
@@ -42,7 +67,6 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

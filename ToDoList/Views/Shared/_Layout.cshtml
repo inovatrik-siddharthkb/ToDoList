@@ -11,7 +11,20 @@
     <link rel="stylesheet" href="~/ToDoList.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-3">
+       @*  @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        } *@
+
+        @* @if (TempData["SessionExpired"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                @TempData["SessionExpired"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        } *@
+
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

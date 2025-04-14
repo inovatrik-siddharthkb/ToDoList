@@ -2,6 +2,7 @@
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ToDoList.Models;
+using ToDoList.Helpers;
 using Microsoft.Extensions.Options;
 
 namespace ToDoList.Controllers
@@ -23,12 +24,27 @@ namespace ToDoList.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
         }
+
+        private async Task<IActionResult?> HandleIfTokenExpired(HttpResponseMessage response)
+        {
+            if (await Helper.CheckTokenExpired(response, this))
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please log in again.";
+                return RedirectToAction("Login", "Account");
+            }
+            return null;
+        }
+
         // GET: Book
         public async Task<IActionResult> Index()
         {
             var client = GetClient();
             var response = await client.GetAsync("api/BooksAPI");
-            var books = await response.Content.ReadFromJsonAsync<List<Book>>();
+
+            var redirect = await HandleIfTokenExpired(response);
+            if (redirect != null) return redirect;
+
+            var books = await response.Content.ReadFromJsonAsync<List<Book>>() ?? new List<Book>();
             return View(books);
         }
 

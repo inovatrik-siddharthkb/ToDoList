@@ -16,6 +16,13 @@
     <div class="card form-card shadow-lg p-4 rounded">
         <h2 class="text-center mb-4">Login</h2>
 
+        @if (TempData["SessionExpired"] != null)
+        {
+            <div class="alert alert-warning text-center">
+                @TempData["SessionExpired"]
+            </div>
+        }
+
         <form asp-action="Login" method="post">
             <div class="mb-3">
                 <label asp-for="Username" class="form-label"></label>
@@ -33,9 +40,9 @@
                 <button type="submit" class="btn btn-primary w-30">Login</button>
             </div>
 
-            <div class="mt-3">
+            @* <div class="mt-3">
                 <div asp-validation-summary="All" class="text-danger"></div>
-            </div>
+            </div> *@
 
             <div class="text-center mt-3">
                 <span>Don't have an account?</span>
