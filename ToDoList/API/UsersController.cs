@@ -15,14 +15,11 @@ namespace ToDoList.API
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
-        private readonly string _baseUrl;
-
 
         public UsersController(AppDbContext context, IConfiguration configuration, IOptions<ApiSettings> apiSettings)
         {
             _context = context;
             _configuration = configuration;
-            _baseUrl = apiSettings.Value.BaseUrl;
         }
 
         [HttpPost("register")]
@@ -31,14 +28,10 @@ namespace ToDoList.API
             if (_context.Users.Any(u => u.Email == dto.Email))
                 return BadRequest("Email already exists");
 
-            if (_context.Users.Any(u => u.Username == dto.Username))
-                return BadRequest("Username already exists");
-
             var user = new User
             {
                 Name = dto.Name,
                 Email = dto.Email,
-                Username = dto.Username,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password)
             };
 
@@ -51,7 +44,7 @@ namespace ToDoList.API
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == dto.Username);
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
                 return Unauthorized("Invalid username or password.");
 
@@ -64,7 +57,7 @@ namespace ToDoList.API
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Email)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

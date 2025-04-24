@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ToDoList.Models;
 
@@ -23,7 +21,7 @@ public partial class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=ASUSVIVOBOOK\\SQLEXPRESS;Database=WorkBookDatabase;Trusted_Connection=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Server=ASUSVIVOBOOK\\SQLEXPRESS;Database=WorkBookDatabases;Trusted_Connection=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -64,8 +62,6 @@ public partial class AppDbContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.HasIndex(e => e.Username, "UQ_User_Username").IsUnique();
-
             entity.HasIndex(e => e.Email, "UQ__User__A9D105344E2CB4A6").IsUnique();
 
             entity.Property(e => e.ID).HasColumnName("ID");
@@ -77,9 +73,6 @@ public partial class AppDbContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
                 .IsUnicode(false);
         });
 

@@ -35,8 +35,6 @@ namespace ToDoList.Controllers
 
             if (errorContent.Contains("Email"))
                 ModelState.AddModelError(nameof(dto.Email), "Email already exists.");
-            else if (errorContent.Contains("Username"))
-                ModelState.AddModelError(nameof(dto.Username), "Username already exists.");
             else
                 ModelState.AddModelError(string.Empty, "Registration failed. Please try again.");
 

@@ -4,9 +4,10 @@ namespace ToDoList.Models
 {
     public class LoginDto
     {
-        [Required]
-        public string Username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
